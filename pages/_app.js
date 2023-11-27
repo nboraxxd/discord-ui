@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
-import { DiscordIcon } from '/components/icons'
+import { Discord } from '/components/icons'
 import '/styles/globals.css'
 import '/styles/font.css'
 
@@ -24,7 +24,7 @@ export default function MyApp({ Component, pageProps }) {
       <div className="flex h-screen text-gray-100">
         <div className="space-y-2 overflow-y-scroll bg-gray-900 p-3 scrollbar-hide">
           <NavLink href="/">
-            <DiscordIcon className="h-5 w-7" />
+            <Discord className="h-5 w-7" />
           </NavLink>
 
           <hr className="mx-2 rounded border-t-2 border-t-white/[.06]" />
