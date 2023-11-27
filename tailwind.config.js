@@ -1,3 +1,4 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
 const flattenColorPalette = require('tailwindcss/lib/util/flattenColorPalette').default
 
 module.exports = {
@@ -5,6 +6,10 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Whitney', 'Open Sans', ...defaultTheme.fontFamily.sans],
+        title: ['Ginto', 'Open Sans', ...defaultTheme.fontFamily.sans],
+      },
       colors: {
         gray: {
           50: '#ECEDEE',
