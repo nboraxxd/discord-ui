@@ -1,11 +1,22 @@
+import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import * as Icons from '/components/icons'
-import data from '/data.json'
 import clsx from 'clsx'
 
-export default function Server1() {
+import * as Icons from '/components/icons'
+import data from '/data.json'
+
+export default function Server() {
+  const [closedCategories, setClosedCategories] = useState([])
   const router = useRouter()
+
+  function toggleCategory(categoryId) {
+    setClosedCategories((closedCategories) =>
+      closedCategories.includes(categoryId)
+        ? closedCategories.filter((id) => id !== categoryId)
+        : [...closedCategories, categoryId]
+    )
+  }
 
   return (
     <>
@@ -22,15 +33,28 @@ export default function Server1() {
           {data[router.query.sid]?.categories.map((category) => (
             <div key={category.id} className="space-y-0.5">
               {category.label !== '' && (
-                <button className="flex w-full items-center px-0.5 font-title text-xs uppercase tracking-wide transition-all hover:text-gray-100">
-                  <Icons.Arrow className="mr-0.5 h-3 w-3" />
+                <button
+                  className="flex w-full items-center px-0.5 font-title text-xs uppercase tracking-wide transition-all hover:text-gray-100"
+                  onClick={() => toggleCategory(category.id)}
+                >
+                  <Icons.Arrow
+                    className={clsx('mr-0.5 h-3 w-3 transition-all duration-200', {
+                      '-rotate-90': closedCategories.includes(category.id),
+                    })}
+                  />
                   {category.label}
                 </button>
               )}
               <div className="space-y-0.5">
-                {category.channels.map((channel) => (
-                  <ChannelLink sid={router.query.sid} key={channel.id} channel={channel} />
-                ))}
+                {category.channels
+                  .filter((channel) => {
+                    let categoryIsOpen = !closedCategories.includes(category.id)
+
+                    return categoryIsOpen || channel.unread
+                  })
+                  .map((channel) => (
+                    <ChannelLink sid={router.query.sid} key={channel.id} channel={channel} />
+                  ))}
               </div>
             </div>
           ))}
