@@ -2,7 +2,7 @@ export default function Home() {
   return (
     <div className="flex h-screen text-gray-100">
       <div className="space-y-2 overflow-y-scroll bg-gray-900 p-3 scrollbar-hide">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-700 text-gray-100 transition-all duration-200 hover:bg-brand hover:text-white">
+        <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-gray-700 text-gray-100 transition-all duration-200 hover:rounded-2xl hover:bg-brand hover:text-white">
           <DiscordIcon className="h-5 w-7" />
         </div>
         {/* {[...Array(40)].map((_, i) => (
