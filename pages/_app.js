@@ -62,7 +62,7 @@ function NavLink({ href, children }) {
           />
         </div>
 
-        <div className="transition-all duration-75 group-active:translate-y-[0.125rem]">
+        <div className="transition-all duration-75 group-active:translate-y-[2px]">
           <div
             className={clsx(
               'flex h-12 w-12 items-center justify-center overflow-hidden bg-gray-700 transition-all duration-200',
