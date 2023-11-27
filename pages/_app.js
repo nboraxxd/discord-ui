@@ -14,6 +14,8 @@ const servers = [
 ]
 
 export default function MyApp({ Component, pageProps }) {
+  const router = useRouter()
+
   return (
     <>
       <Head>
@@ -33,7 +35,11 @@ export default function MyApp({ Component, pageProps }) {
             const serverName = item.img.split('.')[0]
 
             return (
-              <NavLink key={item.id} href={`/servers/${serverName}`}>
+              <NavLink
+                key={item.id}
+                href={`/servers/${serverName}/channels/welcome`}
+                active={router.query.sid === serverName}
+              >
                 <img src={`/servers/${item.img}`} alt={`${serverName} server`} />
               </NavLink>
             )
@@ -46,8 +52,9 @@ export default function MyApp({ Component, pageProps }) {
   )
 }
 
-function NavLink({ href, children }) {
-  const { asPath } = useRouter()
+function NavLink({ href, active, children }) {
+  const router = useRouter()
+  active ||= router.asPath === href // same: active = active || router.asPath === href
 
   return (
     <Link href={href}>
@@ -56,8 +63,8 @@ function NavLink({ href, children }) {
           <div
             className={clsx(
               'w-1 origin-left rounded-r bg-white transition-all duration-200 ',
-              { 'h-10 scale-100 opacity-100': asPath === href },
-              { 'h-5 scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100': asPath !== href }
+              { 'h-10 scale-100 opacity-100': active },
+              { 'h-5 scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100': !active }
             )}
           />
         </div>
@@ -66,10 +73,10 @@ function NavLink({ href, children }) {
           <div
             className={clsx(
               'flex h-12 w-12 items-center justify-center overflow-hidden bg-gray-700 transition-all duration-200',
-              { 'rounded-2xl bg-brand text-white': asPath === href },
+              { 'rounded-2xl bg-brand text-white': active },
               {
                 'rounded-3xl text-gray-100 group-hover:rounded-2xl group-hover:bg-brand group-hover:text-white':
-                  asPath !== href,
+                  !active,
               }
             )}
           >

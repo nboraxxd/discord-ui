@@ -1,6 +1,8 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import * as Icons from '/components/icons'
 import data from '/data.json'
+import clsx from 'clsx'
 
 export default function Server1() {
   const router = useRouter()
@@ -27,7 +29,7 @@ export default function Server1() {
               )}
               <div className="space-y-0.5">
                 {category.channels.map((channel) => (
-                  <ChannelLink key={channel.key} channel={channel} />
+                  <ChannelLink sid={router.query.sid} key={channel.id} channel={channel} />
                 ))}
               </div>
             </div>
@@ -50,18 +52,25 @@ export default function Server1() {
   )
 }
 
-function ChannelLink({ channel }) {
+function ChannelLink({ sid, channel }) {
+  const router = useRouter()
+
   const Icon = channel.icon ? Icons[channel.icon] : Icons.Hashtag
+  const active = channel.label === router.query.cid
 
   return (
-    <a
-      key={channel.id}
-      href="#!"
-      className="group ml-2 mr-1 flex items-center rounded px-2 py-1 text-gray-300 transition-all hover:bg-gray-550/[0.16] hover:text-gray-100"
-    >
-      <Icon className="mr-1.5 h-5 w-5 text-gray-400" />
-      {channel.label}
-      <Icons.AddPerson className="invisible ml-auto h-4 w-4 text-gray-200 opacity-0 transition-all hover:text-gray-100 group-hover:visible group-hover:opacity-100" />
-    </a>
+    <Link key={channel.id} href={`/servers/${sid}/channels/${channel.label}`}>
+      <a
+        className={clsx(
+          'group ml-2 mr-1 flex items-center rounded px-2 py-1 transition-all',
+          { 'bg-gray-550/[0.32] text-white': active },
+          { 'text-gray-300 hover:bg-gray-550/[0.16] hover:text-gray-100': !active }
+        )}
+      >
+        <Icon className="mr-1.5 h-5 w-5 text-gray-400" />
+        {channel.label}
+        <Icons.AddPerson className="invisible ml-auto h-4 w-4 text-gray-200 opacity-0 transition-all hover:text-gray-100 group-hover:visible group-hover:opacity-100" />
+      </a>
+    </Link>
   )
 }
