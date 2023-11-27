@@ -22,7 +22,7 @@ export default function Server1() {
           {data[router.query.sid]?.categories.map((category) => (
             <div key={category.id} className="space-y-0.5">
               {category.label !== '' && (
-                <button className="flex items-center px-0.5 font-title text-xs uppercase tracking-wide">
+                <button className="flex w-full items-center px-0.5 font-title text-xs uppercase tracking-wide transition-all hover:text-gray-100">
                   <Icons.Arrow className="mr-0.5 h-3 w-3" />
                   {category.label}
                 </button>
@@ -58,18 +58,30 @@ function ChannelLink({ sid, channel }) {
   const Icon = channel.icon ? Icons[channel.icon] : Icons.Hashtag
   const active = channel.label === router.query.cid
 
+  const state = active ? 'active' : channel.unread ? 'inactiveUnread' : 'inactiveRead'
+  const classes = {
+    active: 'bg-gray-550/[0.32] text-white',
+    inactiveUnread: 'text-white hover:bg-gray-550/[0.16] active:bg-gray-550/[0.24]',
+    inactiveRead: 'text-gray-300 hover:bg-gray-550/[0.16] hover:text-gray-100 active:bg-gray-550/[0.24]',
+  }
+
   return (
     <Link key={channel.id} href={`/servers/${sid}/channels/${channel.label}`}>
       <a
-        className={clsx(
-          'group ml-2 mr-1 flex items-center rounded px-2 py-1 transition-all',
-          { 'bg-gray-550/[0.32] text-white': active },
-          { 'text-gray-300 hover:bg-gray-550/[0.16] hover:text-gray-100': !active }
-        )}
+        className={clsx('group relative ml-2 mr-1 flex items-center rounded px-2 py-1 transition-all', classes[state])}
       >
+        {state === 'inactiveUnread' && (
+          <div className="absolute -left-2 flex h-full items-center">
+            <div className="flex h-2 w-1 rounded-r-full bg-white" />
+          </div>
+        )}
         <Icon className="mr-1.5 h-5 w-5 text-gray-400" />
         {channel.label}
-        <Icons.AddPerson className="invisible ml-auto h-4 w-4 text-gray-200 opacity-0 transition-all hover:text-gray-100 group-hover:visible group-hover:opacity-100" />
+        <Icons.AddPerson
+          className={clsx('ml-auto h-4 w-4 text-gray-200 transition-all hover:text-gray-100', {
+            'invisible opacity-0 group-hover:visible group-hover:opacity-100': state !== 'active',
+          })}
+        />
       </a>
     </Link>
   )
