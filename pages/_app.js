@@ -18,17 +18,31 @@ export default function MyApp({ Component, pageProps }) {
       <div className="flex h-screen text-gray-100">
         <div className="space-y-2 overflow-y-scroll bg-gray-900 p-3 scrollbar-hide">
           <Link href="/">
-            <a
-              className={clsx(
-                'flex h-12 w-12 items-center justify-center bg-gray-700 transition-all duration-200',
-                { 'rounded-2xl bg-brand text-white': router.pathname === '/' },
-                {
-                  'rounded-3xl text-gray-100 hover:rounded-2xl hover:bg-brand hover:text-white':
-                    router.pathname !== '/',
-                }
-              )}
-            >
-              <DiscordIcon className="h-5 w-7" />
+            <a className="group relative block">
+              <div className="absolute -left-3 flex h-full items-center">
+                <div
+                  className={clsx(
+                    'w-1 origin-left rounded-r bg-white transition-all duration-200 ',
+                    { 'h-10 scale-100 opacity-100': router.pathname === '/' },
+                    { 'h-5 scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100': router.pathname !== '/' }
+                  )}
+                ></div>
+              </div>
+
+              <div className="group-active:translate-y-px">
+                <div
+                  className={clsx(
+                    'flex h-12 w-12 items-center justify-center bg-gray-700 transition-all duration-200',
+                    { 'rounded-2xl bg-brand text-white': router.pathname === '/' },
+                    {
+                      'rounded-3xl text-gray-100 group-hover:rounded-2xl group-hover:bg-brand group-hover:text-white':
+                        router.pathname !== '/',
+                    }
+                  )}
+                >
+                  <DiscordIcon className="h-5 w-7" />
+                </div>
+              </div>
             </a>
           </Link>
           <Link href="/servers/1">
