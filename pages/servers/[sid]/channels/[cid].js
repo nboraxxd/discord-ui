@@ -4,11 +4,19 @@ import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
 import * as Icons from '/components/icons'
-import data from '/data.json'
+import { data } from '/data'
 
 export default function Server() {
   const [closedCategories, setClosedCategories] = useState([])
   const router = useRouter()
+
+  const server = data[router.query.sid]
+  const selectedChannel = server?.categories
+    .map((c) => c.channels)
+    .flat()
+    .find((channel) => channel.label === router.query.cid)
+
+  const ChannelIcon = selectedChannel?.icon ? Icons[selectedChannel.icon] : Icons.Hashtag
 
   function toggleCategory(categoryId) {
     setClosedCategories((closedCategories) =>
@@ -26,11 +34,11 @@ export default function Server() {
             <Icons.Verified className="absolute h-4 w-4 text-gray-550" />
             <Icons.Check className="absolute top-0 h-4 w-4" />
           </div>
-          {data[router.query.sid]?.label}
+          {server?.label}
           <Icons.Chevron className="ml-auto h-[18px] w-[18px] opacity-80" />
         </button>
         <div className="scrollbar mt-3 flex-1 space-y-[21px] overflow-y-scroll font-medium text-gray-300">
-          {data[router.query.sid]?.categories.map((category) => (
+          {server?.categories.map((category) => (
             <div key={category.id} className="space-y-0.5">
               {category.label !== '' && (
                 <button
@@ -60,8 +68,45 @@ export default function Server() {
           ))}
         </div>
       </div>
-      <div className="flex flex-1 flex-col bg-gray-700">
-        <div className="flex h-12 items-center px-3 shadow-sm">general</div>
+
+      <div className="flex min-w-0 flex-1 flex-col bg-gray-700">
+        <div className="flex h-12 items-center px-2 shadow-sm">
+          {/* Channel name */}
+          <div className="flex flex-shrink-0 items-center">
+            <ChannelIcon className="mx-2 h-6 w-6 font-semibold text-gray-400" />
+            <span className="mr-2 font-title text-white">{router.query.cid}</span>
+          </div>
+
+          {/* Channel description */}
+          {selectedChannel?.description && (
+            <>
+              <div className="mx-2 h-6 w-px bg-white/[0.06]" />
+              <div className="mx-2 truncate text-sm font-medium text-gray-200">{selectedChannel.description}</div>
+            </>
+          )}
+
+          {/* Icons */}
+          <div className="ml-auto flex items-center">
+            <button className="text-gray-200 hover:text-gray-100">
+              <Icons.HashtagWithSpeechBubble className="mx-2 h-6 w-6" />
+            </button>
+            <button className="text-gray-200 hover:text-gray-100">
+              <Icons.Bell className="mx-2 h-6 w-6" />
+            </button>
+            <button className="text-gray-200 hover:text-gray-100">
+              <Icons.Pin className="mx-2 h-6 w-6" />
+            </button>
+            <button className="text-gray-200 hover:text-gray-100">
+              <Icons.People className="mx-2 h-6 w-6" />
+            </button>
+            <button className="text-gray-200 hover:text-gray-100">
+              <Icons.Inbox className="mx-2 h-6 w-6" />
+            </button>
+            <button className="text-gray-200 hover:text-gray-100">
+              <Icons.QuestionCircle className="mx-2 h-6 w-6" />
+            </button>
+          </div>
+        </div>
         <div className="scrollbar flex-1 space-y-4 overflow-y-scroll p-3">
           {[...Array(20)].map((_, i) => (
             <p key={i}>
