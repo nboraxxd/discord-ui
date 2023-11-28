@@ -37,7 +37,7 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [require('tailwind-scrollbar-hide'), addVariablesForColors],
+  plugins: [require('tailwind-scrollbar-hide'), require('@tailwindcss/forms'), addVariablesForColors],
 }
 
 // This plugin adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).

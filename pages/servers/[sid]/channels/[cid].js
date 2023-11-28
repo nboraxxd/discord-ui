@@ -72,9 +72,9 @@ export default function Server() {
       <div className="flex min-w-0 flex-1 flex-col bg-gray-700">
         <div className="flex h-12 items-center px-2 shadow-sm">
           {/* Channel name */}
-          <div className="flex flex-shrink-0 items-center">
+          <div className="flex items-center">
             <ChannelIcon className="mx-2 h-6 w-6 font-semibold text-gray-400" />
-            <span className="mr-2 font-title text-white">{router.query.cid}</span>
+            <span className="mr-2 whitespace-nowrap font-title text-white">{router.query.cid}</span>
           </div>
 
           {/* Channel description */}
@@ -99,6 +99,16 @@ export default function Server() {
             <button className="text-gray-200 hover:text-gray-100">
               <Icons.People className="mx-2 h-6 w-6" />
             </button>
+            <div className="relative mx-2">
+              <input
+                type="text"
+                placeholder="Search"
+                className="relative h-6 w-36 rounded border-none bg-gray-900 px-1.5 text-sm font-medium placeholder-gray-400"
+              />
+              <div className="absolute inset-y-0 right-0 flex items-center">
+                <Icons.Spyglass className="mr-1.5 h-4 w-4 text-gray-400" />
+              </div>
+            </div>
             <button className="text-gray-200 hover:text-gray-100">
               <Icons.Inbox className="mx-2 h-6 w-6" />
             </button>
