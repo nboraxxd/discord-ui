@@ -29,11 +29,12 @@ export default function Server() {
 
   return (
     <>
-      <div className="flex w-60 flex-col bg-gray-800">
+      {/* Channels */}
+      <div className="hidden w-60 flex-col bg-gray-800 lg:flex">
         <button className="flex h-12 items-center px-4 font-title text-[0.9375rem] text-white shadow-sm transition-all hover:bg-gray-550/[0.16]">
           <div className="relative mr-1 h-4 w-4">
-            <Icons.Verified className="absolute h-4 w-4 text-gray-550" />
-            <Icons.Check className="absolute top-0 h-4 w-4" />
+            <Icons.Verified className="h-4 w-4 text-gray-550" />
+            <Icons.Check className="absolute inset-y-0 h-4 w-4" />
           </div>
           {server?.label}
           <Icons.Chevron className="ml-auto h-[18px] w-[18px] opacity-80" />
@@ -70,6 +71,7 @@ export default function Server() {
         </div>
       </div>
 
+      {/* Messages area */}
       <div className="flex min-w-0 flex-1 flex-col bg-gray-700">
         <div className="flex h-12 items-center px-2 shadow-sm">
           {/* Channel name */}
@@ -81,13 +83,24 @@ export default function Server() {
           {/* Channel description */}
           {channel?.description && (
             <>
-              <div className="mx-2 h-6 w-px bg-white/[0.06]" />
-              <div className="mx-2 truncate text-sm font-medium text-gray-200">{channel.description}</div>
+              <div className="mx-2 hidden h-6 w-px bg-white/[0.06] md:block" />
+              <div className="mx-2 hidden truncate text-sm font-medium text-gray-200 md:block">
+                {channel.description}
+              </div>
             </>
           )}
 
-          {/* Icons */}
-          <div className="ml-auto flex items-center">
+          {/* Mobile buttons */}
+          <div className="ml-auto flex items-center md:hidden">
+            <button className="text-gray-200 hover:text-gray-100">
+              <Icons.HashtagWithSpeechBubble className="mx-2 h-6 w-6" />
+            </button>
+            <button className="text-gray-200 hover:text-gray-100">
+              <Icons.People className="mx-2 h-6 w-6" />
+            </button>
+          </div>
+          {/* Desktop buttons */}
+          <div className="ml-auto hidden items-center md:flex">
             <button className="text-gray-200 hover:text-gray-100">
               <Icons.HashtagWithSpeechBubble className="mx-2 h-6 w-6" />
             </button>
@@ -174,7 +187,7 @@ function ChannelLink({ sid, channel }) {
 
 function MessageWithUser({ message }) {
   return (
-    <div className="hover:bg-gray-950/[0.07] mr-14 mt-[17px] flex py-0.5 pl-4 leading-[1.375rem] transition-all">
+    <div className="hover:bg-gray-950/[0.07] mt-[17px] flex py-0.5 px-4 leading-[1.375rem] transition-all">
       <img className="mr-4 mt-0.5 h-10 w-10 rounded-full" src={message.avatarUrl} alt={message.user} />
       <div>
         <p className="flex items-baseline">
