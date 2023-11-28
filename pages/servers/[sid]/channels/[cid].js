@@ -15,6 +15,7 @@ export default function Server() {
     .map((c) => c.channels)
     .flat()
     .find((channel) => channel.label === router.query.cid)
+  const selectedChannelMessages = selectedChannel?.messages
 
   const ChannelIcon = selectedChannel?.icon ? Icons[selectedChannel.icon] : Icons.Hashtag
 
@@ -117,14 +118,22 @@ export default function Server() {
             </button>
           </div>
         </div>
-        <div className="scrollbar flex-1 space-y-4 overflow-y-scroll p-3">
-          {[...Array(20)].map((_, i) => (
-            <p key={i}>
-              Message {i}. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Explicabo ipsam repudiandae tempore
-              cupiditate iusto quisquam necessitatibus sed unde perspiciatis, earum molestiae quae aliquid ullam, id
-              dicta labore? Nam, deserunt in!
-            </p>
-          ))}
+        {/* Messages */}
+        <div className="scrollbar flex-1 overflow-y-scroll">
+          {selectedChannelMessages
+            ?.sort((a, b) => new Date(a.date) - new Date(b.date))
+            .map((message, i) => {
+              console.log(message)
+              return (
+                <div key={message.id}>
+                  {i === 0 || message.user !== selectedChannelMessages[i - 1].user ? (
+                    <MessageWithUser message={message} />
+                  ) : (
+                    <Message message={message} />
+                  )}
+                </div>
+              )
+            })}
         </div>
       </div>
     </>
@@ -163,5 +172,28 @@ function ChannelLink({ sid, channel }) {
         />
       </a>
     </Link>
+  )
+}
+
+function MessageWithUser({ message }) {
+  return (
+    <div className="hover:bg-gray-950/[0.07] mr-14 mt-[17px] flex py-0.5 pl-4 leading-[1.375rem] transition-all">
+      <img className="mr-4 mt-0.5 h-10 w-10 rounded-full" src={message.avatarUrl} alt={message.user} />
+      <div>
+        <p className="flex items-baseline">
+          <span className="mr-2 font-medium text-green-400">{message.user}</span>
+          <span className="text-xs font-medium text-gray-400">{message.date}</span>
+        </p>
+        <p className="text-gray-100">{message.text}</p>
+      </div>
+    </div>
+  )
+}
+
+function Message({ message }) {
+  return (
+    <div className="hover:bg-gray-950/[0.07] mr-14 py-0.5 pl-4 leading-[1.375rem] transition-all">
+      <p className="pl-14 text-gray-100">{message.text}</p>
+    </div>
   )
 }
