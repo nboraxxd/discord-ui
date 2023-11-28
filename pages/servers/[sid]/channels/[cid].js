@@ -10,14 +10,14 @@ export default function Server() {
   const [closedCategories, setClosedCategories] = useState([])
   const router = useRouter()
 
-  const server = data[router.query.sid]
-  const selectedChannel = server?.categories
+  const server = data.find((item) => item.slug === router.query.sid)
+  const channel = server?.categories
     .map((c) => c.channels)
     .flat()
     .find((channel) => channel.label === router.query.cid)
-  const selectedChannelMessages = selectedChannel?.messages
+  const selectedChannelMessages = channel?.messages
 
-  const ChannelIcon = selectedChannel?.icon ? Icons[selectedChannel.icon] : Icons.Hashtag
+  const ChannelIcon = channel?.icon ? Icons[channel.icon] : Icons.Hashtag
 
   function toggleCategory(categoryId) {
     setClosedCategories((closedCategories) =>
@@ -79,10 +79,10 @@ export default function Server() {
           </div>
 
           {/* Channel description */}
-          {selectedChannel?.description && (
+          {channel?.description && (
             <>
               <div className="mx-2 h-6 w-px bg-white/[0.06]" />
-              <div className="mx-2 truncate text-sm font-medium text-gray-200">{selectedChannel.description}</div>
+              <div className="mx-2 truncate text-sm font-medium text-gray-200">{channel.description}</div>
             </>
           )}
 
@@ -122,18 +122,15 @@ export default function Server() {
         <div className="scrollbar flex-1 overflow-y-scroll">
           {selectedChannelMessages
             ?.sort((a, b) => new Date(a.date) - new Date(b.date))
-            .map((message, i) => {
-              console.log(message)
-              return (
-                <div key={message.id}>
-                  {i === 0 || message.user !== selectedChannelMessages[i - 1].user ? (
-                    <MessageWithUser message={message} />
-                  ) : (
-                    <Message message={message} />
-                  )}
-                </div>
-              )
-            })}
+            .map((message, i) => (
+              <div key={message.id}>
+                {i === 0 || message.user !== selectedChannelMessages[i - 1].user ? (
+                  <MessageWithUser message={message} />
+                ) : (
+                  <Message message={message} />
+                )}
+              </div>
+            ))}
         </div>
       </div>
     </>

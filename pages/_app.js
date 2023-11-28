@@ -3,15 +3,10 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
+import { data } from '/data'
 import { Discord } from '/components/icons'
 import '/styles/globals.css'
 import '/styles/font.css'
-
-const servers = [
-  { id: '1', img: 'tailwind.png' },
-  { id: '2', img: 'next.png' },
-  { id: '3', img: 'mirage.png' },
-]
 
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter()
@@ -31,16 +26,14 @@ export default function MyApp({ Component, pageProps }) {
 
           <hr className="mx-2 rounded border-t-2 border-t-white/[.06]" />
 
-          {servers.map((item) => {
-            const serverName = item.img.split('.')[0]
-
+          {data.map((item) => {
             return (
               <NavLink
                 key={item.id}
-                href={`/servers/${serverName}/channels/welcome`}
-                active={router.query.sid === serverName}
+                href={`/servers/${item.slug}/channels/${item.categories[0].channels[0].label}`}
+                active={router.query.sid === item.slug}
               >
-                <img src={`/servers/${item.img}`} alt={`${serverName} server`} />
+                <img src={`/servers/${item.img}`} alt={`${item.label} server`} />
               </NavLink>
             )
           })}

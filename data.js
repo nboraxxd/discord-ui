@@ -3,9 +3,12 @@ import faker from 'faker'
 
 faker.seed(123)
 
-export const data = {
-  tailwind: {
+export const data = [
+  {
+    id: 1,
+    slug: 'tailwind-css',
     label: 'Tailwind CSS',
+    img: 'tailwind.png',
     categories: [
       {
         id: 1,
@@ -144,8 +147,11 @@ export const data = {
       },
     ],
   },
-  next: {
+  {
+    id: 2,
+    slug: 'Nextjs',
     label: 'Next.js',
+    img: 'next.png',
     categories: [
       {
         id: 6,
@@ -239,8 +245,11 @@ export const data = {
       },
     ],
   },
-  mirage: {
+  {
+    id: 3,
+    slug: 'mirageJS',
     label: 'Mirage JS',
+    img: 'mirage.png',
     categories: [
       {
         id: 9,
@@ -258,7 +267,7 @@ export const data = {
       },
     ],
   },
-}
+]
 
 function getMessages() {
   return [...Array(faker.datatype.number({ min: 7, max: 25 }))]
